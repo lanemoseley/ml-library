@@ -1,0 +1,284 @@
+Help on module ML:
+
+NAME
+    ML
+
+DESCRIPTION
+    # Program Name: Machine Learning Library
+    # Author: Lane Moseley
+    # Class: CSC 448, Fall 2020
+    # Professor: Dr. Karlsson
+    # Language/Compiler: Python 3.7
+    # Known Bugs:  No known bugs at this time.
+
+CLASSES
+    builtins.object
+        LinearRegression
+        Perceptron
+    sklearn.base.BaseEstimator(builtins.object)
+        AxisAlignedRectangles(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
+    sklearn.base.ClassifierMixin(builtins.object)
+        AxisAlignedRectangles(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
+    
+    class AxisAlignedRectangles(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
+     |  AxisAlignedRectangles(iterations=10)
+     |  
+     |  This is the axis-aligned rectangle low vc dimension learner implementation
+     |     for the ML library.
+     |  
+     |  Args:
+     |      BaseEstimator : Base class for all estimators in scikit-learn,
+     |                      used for compatibility with the sci-kit-learn AdaBoostClassifier
+     |      ClassifierMixin : Mixin class for all classifiers in scikit-learn,
+     |                        used for compatibility with the sci-kit-learn AdaBoostClassifier
+     |  
+     |  Method resolution order:
+     |      AxisAlignedRectangles
+     |      sklearn.base.BaseEstimator
+     |      sklearn.base.ClassifierMixin
+     |      builtins.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, iterations=10)
+     |      Initialize the axis-aligned rectangle low vc dimension learner.
+     |      
+     |      Args:
+     |          iterations: number of iterations for reducing size of axis-aligned rectangle, defaults to 10
+     |  
+     |  fit(self, X, y, sample_weight=None)
+     |      Fit training data.
+     |      
+     |      Args:
+     |          X : X training vector
+     |          y : y label vector
+     |          sample_weight (optional): Required for compatibility with the scikit-learn Adaboost module. Defaults to None.
+     |      
+     |      Returns:
+     |          self : Required for compatibility with the scikit-learn Adaboost module.
+     |  
+     |  predict(self, X)
+     |      Return the predicted Y values.
+     |      
+     |      Args:
+     |          X : X test vector
+     |      
+     |      Returns:
+     |          Y_pred : Y prediction vector
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from sklearn.base.BaseEstimator:
+     |  
+     |  __getstate__(self)
+     |  
+     |  __repr__(self, N_CHAR_MAX=700)
+     |      Return repr(self).
+     |  
+     |  __setstate__(self, state)
+     |  
+     |  get_params(self, deep=True)
+     |      Get parameters for this estimator.
+     |      
+     |      Parameters
+     |      ----------
+     |      deep : bool, default=True
+     |          If True, will return the parameters for this estimator and
+     |          contained subobjects that are estimators.
+     |      
+     |      Returns
+     |      -------
+     |      params : mapping of string to any
+     |          Parameter names mapped to their values.
+     |  
+     |  set_params(self, **params)
+     |      Set the parameters of this estimator.
+     |      
+     |      The method works on simple estimators as well as on nested objects
+     |      (such as pipelines). The latter have parameters of the form
+     |      ``<component>__<parameter>`` so that it's possible to update each
+     |      component of a nested object.
+     |      
+     |      Parameters
+     |      ----------
+     |      **params : dict
+     |          Estimator parameters.
+     |      
+     |      Returns
+     |      -------
+     |      self : object
+     |          Estimator instance.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from sklearn.base.BaseEstimator:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from sklearn.base.ClassifierMixin:
+     |  
+     |  score(self, X, y, sample_weight=None)
+     |      Return the mean accuracy on the given test data and labels.
+     |      
+     |      In multi-label classification, this is the subset accuracy
+     |      which is a harsh metric since you require for each sample that
+     |      each label set be correctly predicted.
+     |      
+     |      Parameters
+     |      ----------
+     |      X : array-like of shape (n_samples, n_features)
+     |          Test samples.
+     |      
+     |      y : array-like of shape (n_samples,) or (n_samples, n_outputs)
+     |          True labels for X.
+     |      
+     |      sample_weight : array-like of shape (n_samples,), default=None
+     |          Sample weights.
+     |      
+     |      Returns
+     |      -------
+     |      score : float
+     |          Mean accuracy of self.predict(X) wrt. y.
+    
+    class LinearRegression(builtins.object)
+     |  LinearRegression(learning_rate=0.05, iterations=1000)
+     |  
+     |  This is the linear regression implementation for the ML library.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, learning_rate=0.05, iterations=1000)
+     |      Initialize the linear regression module.
+     |      
+     |      Args:
+     |          learning_rate (float, optional): used to scale the weight array. Defaults to 0.05.
+     |          iterations (int, optional): number of gradient descent iterations. Defaults to 1000.
+     |  
+     |  fit(self, X, Y)
+     |      Fit training data. Since all linear regression problems are
+     |      convex regardless of the input data, we can use gradient descent
+     |      without worrying about getting stuck in a local minimum.
+     |      
+     |      Args:
+     |          X : X training vector (independent variables)
+     |          Y : Y training vector (dependent variables)
+     |  
+     |  predict(self, X_test)
+     |      Return the predicted Y values.
+     |      
+     |      Args:
+     |          X_test : X test vector
+     |      
+     |      Returns:
+     |          Y_pred : Y prediction vector
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Perceptron(builtins.object)
+     |  Perceptron(learning_rate=0.01, iterations=10)
+     |  
+     |  This is the perceptron implementation for the ML library.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, learning_rate=0.01, iterations=10)
+     |      Initialize the perceptron.
+     |      
+     |      Args:
+     |          learning_rate Float: used to scale the weight array
+     |          iterations Int: number of iterations for fitting data to labels
+     |  
+     |  fit(self, X, y)
+     |      Fit training data.
+     |      
+     |      Args:
+     |          X : Training vectors, X.shape : [#samples, #features]
+     |          y : Target values, y.shape : [#samples]
+     |  
+     |  net_input(self, X)
+     |      Calculate the net input.
+     |      
+     |      Args:
+     |          X : Training vectors, X.shape : [#samples, #features]
+     |      
+     |      Returns:
+     |          Float: the dot product (X.w) plus the bias
+     |  
+     |  predict(self, X)
+     |      Return the class label after unit step
+     |      
+     |      Args:
+     |          X : Training vectors, X.shape : [#samples, #features]
+     |      
+     |      Returns:
+     |          Int: the predicted class label (1 or -1)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Readonly properties defined here:
+     |  
+     |  errors
+     |      This is the getter for the error array. Using a getter prevents the caller from changing the array.
+     |      
+     |      Returns:
+     |          list: the array of errors in each iteration
+     |  
+     |  weight
+     |      This is the getter for the weight array. Using a getter prevents the caller from changing the array.
+     |      
+     |      Returns:
+     |          numpy.ndarray: the current weight array
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+FUNCTIONS
+    plot_decision_regions(X, y, classifier, resolution=0.02, x_label='', y_label='', title='')
+        This is a helper function to plot the decision regions of the classifier. This shows the partition(s) between the
+        different classes of objects.
+        
+        Args:
+            X : Training vectors, X.shape : [#samples, #features]
+            y : Target values, y.shape : [#samples]
+            classifier : the classification algorithm
+            resolution (float, optional) : the resolution of the meshgrid
+            x_label (string, optional) : the x label for the plot
+            y_label (string, optional) : the y label for the plot
+            title (string, optional) : the title for the plot
+    
+    plot_regression_line(y_predicted, x_actual, y_actual, x_label='', y_label='', title='', line_color='red', x_range=None, y_range=None)
+        This function plots the linear regression line.
+            A linear regression line has an equation of the form Y = a + bX.
+            X is the explanatory variable and Y is the dependent variable.
+            The slope of the line is b, and a is the intercept.
+        
+        Args:
+            y_predicted : the y values predicted by the linear regression learner
+            x_actual : the actual x values
+            y_actual : the actual y values
+            x_label (str, optional): Horizontal axis label. Defaults to "".
+            y_label (str, optional): Vertical axis label. Defaults to "".
+            title (str, optional): Plot title. Defaults to "".
+            line_color (str, optional): Plot line color. Defaults to 'red'.
+            x_range (tuple, optional): x range of graph
+            y_range (tuple, optional): y range of graph
+
+FILE
+    /Users/lmoseley/Repositories/csc448/exam_1/ML.py
+
+
