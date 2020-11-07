@@ -6,6 +6,7 @@
 # Known Bugs:  No known bugs at this time.
 
 import numpy as np
+from math import exp, inf
 from matplotlib.colors import ListedColormap
 import matplotlib.pyplot as plt
 from sklearn.base import BaseEstimator, ClassifierMixin
@@ -165,6 +166,39 @@ class LinearRegression:
             Y_pred : Y prediction vector
         """
         return (self.slope * X_test) + self.intercept
+
+
+class LogisticRegression:
+    """This is the logistic regression implementation for the ML library.
+    """
+    def __init__(self, learning_rate=0.01, iterations=50):
+        self.__iterations = iterations
+        self.__learning_rate = learning_rate
+        self.__weights = None
+
+    def fit(self, X, Y):
+        self.__weights = np.zeros(X.shape[1] + 1)
+
+        for iter in range(self.__iterations):
+            for i in range(X.shape[0]):
+                # y_pred = self.predict(np.array([X[i]]))
+                y_pred = 1.0 / (1.0 + exp(-(self.__weights[0] + sum(self.__weights[1:] * X[i]))))
+                error = Y[i] - y_pred   # TODO: ???
+                # print("Error:", error)
+                # print("Y_pred:", y_pred)
+                self.__weights[0] += self.__learning_rate * error * y_pred * (1.0 - y_pred)
+                self.__weights[1:] += self.__learning_rate * error * y_pred * (1.0 - y_pred) * X[i]
+
+    def predict(self, X_test):
+        Y_pred = np.zeros(X_test.shape[0])
+        for i in range(X_test.shape[0]):
+            Y_pred[i] = 1.0 / (1.0 + exp(-(self.__weights[0] + sum(self.__weights[1:] * X_test[i, :]))))
+
+        # print(Y_pred)
+        Y_pred[Y_pred >= 0.5] = 1
+        Y_pred[Y_pred < 0.5] = 0
+        # print(Y_pred)
+        return Y_pred.astype(int)
 
 
 class Perceptron:

@@ -62,15 +62,15 @@ def main():
     print(title + "\nscikit-learn Logistic Regression Model")
     print(classification_report(y, skLR.predict(X)))
 
-    # TODO:
     # ML.py logistic regression
-    # mlLR = LogisticRegression()
-    # mlLR.fit(X, y)
+    mlLR = LogisticRegression()
+    mlLR.fit(X, y)
 
     # plot the decision regions and display metrics to the console
-    # plot_decision_regions(X, y, mlLR, resolution=0.1, x_label=xlabel, y_label=ylabel,
-    #                       title=title + "\nML.py Logistic Regression Model")
-    # print(title + "\nML.py Logistic Regression Model")
+    plot_decision_regions(X, y, mlLR, resolution=0.1, x_label=xlabel, y_label=ylabel,
+                          title=title + "\nML.py Logistic Regression Model")
+    print(title + "\nML.py Logistic Regression Model")
+    # TODO:
     # print(classification_report(y, mlLR.predict(X)))
 
     # FISH DATASET #############################################################
@@ -115,15 +115,15 @@ def main():
     print(title + "\nscikit-learn Logistic Regression Model")
     print(classification_report(y, skLR.predict(X)))
 
-    # TODO:
     # ML.py logistic regression
-    # mlLR = LogisticRegression()
-    # mlLR.fit(X, y)
+    mlLR = LogisticRegression()
+    mlLR.fit(X, y)
 
     # plot the decision regions and display metrics to the console
-    # plot_decision_regions(X, y, mlLR, resolution=0.1, x_label=xlabel, y_label=ylabel,
-    #                       title=title + "\nML.py Logistic Regression Model")
-    # print(title + "\nML.py Logistic Regression Model")
+    plot_decision_regions(X, y, mlLR, resolution=0.1, x_label=xlabel, y_label=ylabel,
+                          title=title + "\nML.py Logistic Regression Model")
+    print(title + "\nML.py Logistic Regression Model")
+    # TODO:
     # print(classification_report(y, mlLR.predict(X)))
 
 
