@@ -63,27 +63,28 @@ def main():
     print(classification_report(y, skLR.predict(X)))
 
     # ML.py logistic regression
-    mlLR = LogisticRegression()
+    mlLR = LogisticRegression(learning_rate=0.05, iterations=25)
     mlLR.fit(X, y)
 
     # plot the decision regions and display metrics to the console
     plot_decision_regions(X, y, mlLR, resolution=0.1, x_label=xlabel, y_label=ylabel,
                           title=title + "\nML.py Logistic Regression Model")
     print(title + "\nML.py Logistic Regression Model")
-    # TODO:
-    # print(classification_report(y, mlLR.predict(X)))
+    print(classification_report(y, mlLR.predict(X)))
 
     # FISH DATASET #############################################################
     df = pd.read_csv('./Fish.csv')
+    df = df.drop(df.index[0:61])        # Parkki rows
+    df = df.drop(df.index[11:84])       # Smelt rows
 
-    # Extract the data for Bream and Roach fish
-    y = df.iloc[:55, 0].values
+    # Extract the data for Parkki and Smelt fish
+    y = df.iloc[:, 0].values
 
-    # Convert the labels to either 1 or 0
-    y = np.where(y == 'Bream', 0, 1)
+    # Convert the labels to either 0 or 1
+    y = np.where(y == 'Parkki', 0, 1)
 
     # Extract features from dataset [weight, length]
-    X = df.iloc[:55, [2, 1]].values
+    X = df.iloc[:, [2, 1]].values
 
     # plot variables
     title = 'Fish Dataset'
@@ -95,10 +96,10 @@ def main():
     plt.title(title)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
-    # Plot the Bream data
-    plt.scatter(X[:35, 0], X[:35, 1], color='red', marker='o', label='Bream')
-    # Plot the Roach data
-    plt.scatter(X[35:, 0], X[35:, 1], color='blue', marker='x', label='Roach')
+    # Plot the Parkki data
+    plt.scatter(X[:11, 0], X[:11, 1], color='red', marker='o', label='Parkki')
+    # Plot the Smelt data
+    plt.scatter(X[11:, 0], X[11:, 1], color='blue', marker='x', label='Smelt')
     # Setup the plot legend
     plt.legend(loc='upper left')
 
@@ -116,15 +117,14 @@ def main():
     print(classification_report(y, skLR.predict(X)))
 
     # ML.py logistic regression
-    mlLR = LogisticRegression()
+    mlLR = LogisticRegression(learning_rate=0.01, iterations=10)
     mlLR.fit(X, y)
 
     # plot the decision regions and display metrics to the console
     plot_decision_regions(X, y, mlLR, resolution=0.1, x_label=xlabel, y_label=ylabel,
                           title=title + "\nML.py Logistic Regression Model")
     print(title + "\nML.py Logistic Regression Model")
-    # TODO:
-    # print(classification_report(y, mlLR.predict(X)))
+    print(classification_report(y, mlLR.predict(X)))
 
 
 if __name__ == "__main__":
