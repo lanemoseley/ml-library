@@ -189,12 +189,13 @@ class LogisticRegression:
             X: X training vector (independent variables)
             Y : Y training vector (dependent variables)
         """
+        # TODO: currently, this only works if the data is linearly separable
         self.__weights = np.zeros(X.shape[1] + 1)
 
         for iter in range(self.__iterations):
             for i in range(X.shape[0]):
                 y_pred = 1.0 / (1.0 + exp(-(self.__weights[0] + np.dot(X[i], self.__weights[1:]))))
-                error = Y[i] - y_pred   # TODO: ???
+                error = Y[i] - y_pred
                 self.__weights[0] += self.__learning_rate * error * y_pred * (1.0 - y_pred)
                 self.__weights[1:] += self.__learning_rate * error * y_pred * (1.0 - y_pred) * X[i]
 
