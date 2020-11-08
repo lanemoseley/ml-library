@@ -172,11 +172,23 @@ class LogisticRegression:
     """This is the logistic regression implementation for the ML library.
     """
     def __init__(self, learning_rate=0.01, iterations=10):
+        """Initialize the logistic regression module.
+
+        Args:
+            learning_rate (float, optional): used to scale the weight array. Defaults to 0.01.
+            iterations (int, optional): number of gradient descent iterations. Defaults to 10.
+        """
         self.__iterations = iterations
         self.__learning_rate = learning_rate
         self.__weights = None
 
     def fit(self, X, Y):
+        """Fit training data.
+
+        Args:
+            X: X training vector (independent variables)
+            Y : Y training vector (dependent variables)
+        """
         self.__weights = np.zeros(X.shape[1] + 1)
 
         for iter in range(self.__iterations):
@@ -187,6 +199,14 @@ class LogisticRegression:
                 self.__weights[1:] += self.__learning_rate * error * y_pred * (1.0 - y_pred) * X[i]
 
     def predict(self, X_test):
+        """Return the predicted Y values.
+
+        Args:
+            X_test: X_test : X test vector
+
+        Returns:
+            Y_pred : Y prediction vector
+        """
         # apply the weights
         X_test = np.dot(X_test, self.__weights[1:])
         X_test += self.__weights[0]
