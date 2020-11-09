@@ -18,8 +18,10 @@ CLASSES
         Perceptron
     sklearn.base.BaseEstimator(builtins.object)
         AxisAlignedRectangles(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
+        DecisionStump(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
     sklearn.base.ClassifierMixin(builtins.object)
         AxisAlignedRectangles(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
+        DecisionStump(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
     
     class AxisAlignedRectangles(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
      |  AxisAlignedRectangles(iterations=10)
@@ -46,6 +48,124 @@ CLASSES
      |      
      |      Args:
      |          iterations: number of iterations for reducing size of axis-aligned rectangle, defaults to 10
+     |  
+     |  fit(self, X, y, sample_weight=None)
+     |      Fit training data.
+     |      
+     |      Args:
+     |          X : X training vector
+     |          y : y label vector
+     |          sample_weight (optional): Required for compatibility with the scikit-learn Adaboost module. Defaults to None.
+     |      
+     |      Returns:
+     |          self : Required for compatibility with the scikit-learn Adaboost module.
+     |  
+     |  predict(self, X)
+     |      Return the predicted Y values.
+     |      
+     |      Args:
+     |          X : X test vector
+     |      
+     |      Returns:
+     |          Y_pred : Y prediction vector
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from sklearn.base.BaseEstimator:
+     |  
+     |  __getstate__(self)
+     |  
+     |  __repr__(self, N_CHAR_MAX=700)
+     |      Return repr(self).
+     |  
+     |  __setstate__(self, state)
+     |  
+     |  get_params(self, deep=True)
+     |      Get parameters for this estimator.
+     |      
+     |      Parameters
+     |      ----------
+     |      deep : bool, default=True
+     |          If True, will return the parameters for this estimator and
+     |          contained subobjects that are estimators.
+     |      
+     |      Returns
+     |      -------
+     |      params : mapping of string to any
+     |          Parameter names mapped to their values.
+     |  
+     |  set_params(self, **params)
+     |      Set the parameters of this estimator.
+     |      
+     |      The method works on simple estimators as well as on nested objects
+     |      (such as pipelines). The latter have parameters of the form
+     |      ``<component>__<parameter>`` so that it's possible to update each
+     |      component of a nested object.
+     |      
+     |      Parameters
+     |      ----------
+     |      **params : dict
+     |          Estimator parameters.
+     |      
+     |      Returns
+     |      -------
+     |      self : object
+     |          Estimator instance.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from sklearn.base.BaseEstimator:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from sklearn.base.ClassifierMixin:
+     |  
+     |  score(self, X, y, sample_weight=None)
+     |      Return the mean accuracy on the given test data and labels.
+     |      
+     |      In multi-label classification, this is the subset accuracy
+     |      which is a harsh metric since you require for each sample that
+     |      each label set be correctly predicted.
+     |      
+     |      Parameters
+     |      ----------
+     |      X : array-like of shape (n_samples, n_features)
+     |          Test samples.
+     |      
+     |      y : array-like of shape (n_samples,) or (n_samples, n_outputs)
+     |          True labels for X.
+     |      
+     |      sample_weight : array-like of shape (n_samples,), default=None
+     |          Sample weights.
+     |      
+     |      Returns
+     |      -------
+     |      score : float
+     |          Mean accuracy of self.predict(X) wrt. y.
+    
+    class DecisionStump(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
+     |  This is the decision stump low vc dimension learner implementation
+     |     for the ML library.
+     |  
+     |  Args:
+     |      BaseEstimator : Base class for all estimators in scikit-learn,
+     |                      used for compatibility with the sci-kit-learn AdaBoostClassifier
+     |      ClassifierMixin : Mixin class for all classifiers in scikit-learn,
+     |                        used for compatibility with the sci-kit-learn AdaBoostClassifier
+     |  
+     |  Method resolution order:
+     |      DecisionStump
+     |      sklearn.base.BaseEstimator
+     |      sklearn.base.ClassifierMixin
+     |      builtins.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self)
+     |      Initialize the decision stump low vc dimension learner.
      |  
      |  fit(self, X, y, sample_weight=None)
      |      Fit training data.
