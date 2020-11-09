@@ -145,15 +145,6 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
         self.X_ = X
         self.y_ = y
 
-        # Using pseudocode from textbook & description from https://www.ccs.neu.edu/home/vip/teach/MLcourse/4_boosting/HW4/HW_boosting.html
-        # if weights are not given, just use 1 / m
-        # TODO: what to do with these?
-        # if sample_weight is None:
-        #     sample_weight = np.ones((X.shape[0], 1)) / X.shape[0]
-
-        # we need to find j* and theta* that solve eq. 10.1 from textbook
-        # j* is the column and theta* is the threshold
-
         # for each feature
         for j in range(X.shape[1]):
             # S = { (x_1, y_1), (x_2, y_2), ..., (x_m, y_m) }
@@ -180,7 +171,7 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
                 self.__inequality = self.__greater
 
                 y_pred = self.predict(X)
-                y_pred = y_pred[:, 0]
+
                 # print(y)
                 # print(y_pred)
                 # print(y_pred[y_pred != y])
@@ -206,7 +197,7 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
                 self.__inequality = self.__lesser
 
                 y_pred = self.predict(X)
-                y_pred = y_pred[:, 0]
+
                 # print(y)
                 # print(y_pred)
                 # print(y_pred[y_pred != y])
@@ -232,9 +223,9 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
             #         self.__theta = 0.5 * (S[i, j] + S[i+1, j])
             #         self.__split = j
 
-        print("Split:", self.__split)
-        print("Thresh:", self.__threshold)
-        print(self.__inequality)
+        # print("Split:", self.__split)
+        # print("Thresh:", self.__threshold)
+        # print(self.__inequality)
 
         return self
 
@@ -249,13 +240,13 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
         """
         Y_pred = np.ones((X.shape[0], 1))
 
-        print("split:", self.__split)
-        print("threshold:", self.__threshold)
-        print(X[:, self.__split])
+        # print("split:", self.__split)
+        # print("threshold:", self.__threshold)
+        # print(X[:, self.__split])
 
         Y_pred[self.__inequality(X[:, self.__split], self.__threshold)] = -1
 
-        return Y_pred
+        return Y_pred.T[0]
 
 
 class LinearRegression:
