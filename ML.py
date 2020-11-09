@@ -145,7 +145,7 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
         self.X_ = X
         self.y_ = y
 
-        # for each feature
+        # for each feature in X
         for j in range(X.shape[1]):
             # S = { (x_1, y_1), (x_2, y_2), ..., (x_m, y_m) }
             S = np.hstack((X, np.array([y]).T))
@@ -154,29 +154,27 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
             # where j is the column and 1,2,...m are the rows
             S = S[np.argsort(S[:, j])]
 
+            # remove duplicate values from consideration
+            # this can cut down on the number of thresholds that are tested
             keys, indices = np.unique(S[:, j], return_index=True)
             unique = S[indices]
 
+            # for each row in X[:, split], test the midpoint between consecutive
+            # feature values to see if it would make a good threshold
             for row in range(0, unique.shape[0] - 1):
+                # check the threshold using the greater than lambda
+                # save the old configuration
                 old_split = self.__split
                 old_thresh = self.__threshold
-
-                self.__split = j
-                self.__threshold = unique[row, j] + ((unique[row+1, j] - unique[row, j]) / 2.0)
-
-                # print("split:", self.__split)
-                # print("thresh:", self.__threshold)
-
                 old_lambda = self.__inequality
+
+                # assign a new configuration
                 self.__inequality = self.__greater
+                self.__split = j
+                self.__threshold = unique[row, j] + ((unique[row+1, j] - unique[row, j]) / 2.0)
 
                 y_pred = self.predict(X)
-
-                # print(y)
-                # print(y_pred)
-                # print(y_pred[y_pred != y])
                 error = len(y_pred[y_pred != y])
-                # print("error:", error)
 
                 if error >= self.__error:
                     self.__split = old_split
@@ -184,25 +182,21 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
                     self.__inequality = old_lambda
 
                 else:
-                    # print("ERROR:", error)
-                    # print("Thresh:", self.__threshold)
-                    # print("Split:", self.__split)
                     self.__error = error
 
+                # check the threshold using the less than lambda
+                # save the old configuration
                 old_split = self.__split
                 old_thresh = self.__threshold
                 old_lambda = self.__inequality
+
+                # assign a new configuration
+                self.__inequality = self.__lesser
                 self.__split = j
                 self.__threshold = unique[row, j] + ((unique[row+1, j] - unique[row, j]) / 2.0)
-                self.__inequality = self.__lesser
 
                 y_pred = self.predict(X)
-
-                # print(y)
-                # print(y_pred)
-                # print(y_pred[y_pred != y])
                 error = len(y_pred[y_pred != y])
-                # print(error)
 
                 if error >= self.__error:
                     self.__split = old_split
@@ -210,22 +204,7 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
                     self.__inequality = old_lambda
 
                 else:
-                    # print("ERROR:", error)
-                    # print("Thresh:", self.__threshold)
-                    # print("Split:", self.__split)
                     self.__error = error
-
-
-            # for i in range(S.shape[0]):
-            #     error = error - (S[i, -1] * sample_weight[i])
-            #     if error < self.__error and S[i, j] != S[i+1, j]:
-            #         self.__error = error
-            #         self.__theta = 0.5 * (S[i, j] + S[i+1, j])
-            #         self.__split = j
-
-        # print("Split:", self.__split)
-        # print("Thresh:", self.__threshold)
-        # print(self.__inequality)
 
         return self
 
@@ -239,11 +218,6 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
             Y_pred : Y prediction vector
         """
         Y_pred = np.ones((X.shape[0], 1))
-
-        # print("split:", self.__split)
-        # print("threshold:", self.__threshold)
-        # print(X[:, self.__split])
-
         Y_pred[self.__inequality(X[:, self.__split], self.__threshold)] = -1
 
         return Y_pred.T[0]
