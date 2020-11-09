@@ -108,6 +108,156 @@ class AxisAlignedRectangles(BaseEstimator, ClassifierMixin):
         return Y_pred.T[0]
 
 
+class DecisionStump(BaseEstimator, ClassifierMixin):
+    """This is the decision stump low vc dimension learner implementation
+       for the ML library.
+
+    Args:
+        BaseEstimator : Base class for all estimators in scikit-learn,
+                        used for compatibility with the sci-kit-learn AdaBoostClassifier
+        ClassifierMixin : Mixin class for all classifiers in scikit-learn,
+                          used for compatibility with the sci-kit-learn AdaBoostClassifier
+    """
+    def __init__(self):
+        """Initialize the decision stump low vc dimension learner.
+        """
+        # lambdas for comparisons
+        self.__greater = lambda a, b : a > b
+        self.__lesser = lambda a, b : a < b
+
+        self.__error = inf
+        self.__inequality = self.__greater
+        self.__split = 0
+        self.__threshold = inf
+
+    def fit(self, X, y, sample_weight=None):
+        """Fit training data.
+
+        Args:
+            X : X training vector
+            y : y label vector
+            sample_weight (optional): Required for compatibility with the scikit-learn Adaboost module. Defaults to None.
+
+        Returns:
+            self : Required for compatibility with the scikit-learn Adaboost module.
+        """
+        self.classes_ = unique_labels(y)
+        self.X_ = X
+        self.y_ = y
+
+        # Using pseudocode from textbook & description from https://www.ccs.neu.edu/home/vip/teach/MLcourse/4_boosting/HW4/HW_boosting.html
+        # if weights are not given, just use 1 / m
+        # TODO: what to do with these?
+        # if sample_weight is None:
+        #     sample_weight = np.ones((X.shape[0], 1)) / X.shape[0]
+
+        # we need to find j* and theta* that solve eq. 10.1 from textbook
+        # j* is the column and theta* is the threshold
+
+        # for each feature
+        for j in range(X.shape[1]):
+            # S = { (x_1, y_1), (x_2, y_2), ..., (x_m, y_m) }
+            S = np.hstack((X, np.array([y]).T))
+
+            # sort(S) using jth coordinate s.t. x1j <= x2j <= ... <= xmj
+            # where j is the column and 1,2,...m are the rows
+            S = S[np.argsort(S[:, j])]
+
+            keys, indices = np.unique(S[:, j], return_index=True)
+            unique = S[indices]
+
+            for row in range(0, unique.shape[0] - 1):
+                old_split = self.__split
+                old_thresh = self.__threshold
+
+                self.__split = j
+                self.__threshold = unique[row, j] + ((unique[row+1, j] - unique[row, j]) / 2.0)
+
+                # print("split:", self.__split)
+                # print("thresh:", self.__threshold)
+
+                old_lambda = self.__inequality
+                self.__inequality = self.__greater
+
+                y_pred = self.predict(X)
+                y_pred = y_pred[:, 0]
+                # print(y)
+                # print(y_pred)
+                # print(y_pred[y_pred != y])
+                error = len(y_pred[y_pred != y])
+                # print("error:", error)
+
+                if error >= self.__error:
+                    self.__split = old_split
+                    self.__threshold = old_thresh
+                    self.__inequality = old_lambda
+
+                else:
+                    # print("ERROR:", error)
+                    # print("Thresh:", self.__threshold)
+                    # print("Split:", self.__split)
+                    self.__error = error
+
+                old_split = self.__split
+                old_thresh = self.__threshold
+                old_lambda = self.__inequality
+                self.__split = j
+                self.__threshold = unique[row, j] + ((unique[row+1, j] - unique[row, j]) / 2.0)
+                self.__inequality = self.__lesser
+
+                y_pred = self.predict(X)
+                y_pred = y_pred[:, 0]
+                # print(y)
+                # print(y_pred)
+                # print(y_pred[y_pred != y])
+                error = len(y_pred[y_pred != y])
+                # print(error)
+
+                if error >= self.__error:
+                    self.__split = old_split
+                    self.__threshold = old_thresh
+                    self.__inequality = old_lambda
+
+                else:
+                    # print("ERROR:", error)
+                    # print("Thresh:", self.__threshold)
+                    # print("Split:", self.__split)
+                    self.__error = error
+
+
+            # for i in range(S.shape[0]):
+            #     error = error - (S[i, -1] * sample_weight[i])
+            #     if error < self.__error and S[i, j] != S[i+1, j]:
+            #         self.__error = error
+            #         self.__theta = 0.5 * (S[i, j] + S[i+1, j])
+            #         self.__split = j
+
+        print("Split:", self.__split)
+        print("Thresh:", self.__threshold)
+        print(self.__inequality)
+
+        return self
+
+    def predict(self, X):
+        """Return the predicted Y values.
+
+        Args:
+            X : X test vector
+
+        Returns:
+            Y_pred : Y prediction vector
+        """
+        Y_pred = np.ones((X.shape[0], 1))
+
+        print("split:", self.__split)
+        print("threshold:", self.__threshold)
+        print(X[:, self.__split])
+
+        Y_pred[self.__inequality(X[:, self.__split], self.__threshold)] = -1
+
+        return Y_pred
+
+
 class LinearRegression:
     """This is the linear regression implementation for the ML library.
     """
@@ -189,7 +339,6 @@ class LogisticRegression:
             X: X training vector (independent variables)
             Y : Y training vector (dependent variables)
         """
-        # TODO: currently, this only works if the data is linearly separable
         self.__weights = np.zeros(X.shape[1] + 1)
 
         for iter in range(self.__iterations):
