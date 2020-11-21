@@ -223,6 +223,38 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
         return Y_pred.T[0]
 
 
+class NearestNeighbors:
+    """This is the k-nearest neighbors implementation for the ML library.
+    """
+    def __init__(self):
+        """Initialize k-nearest neighbors.
+
+        Args:
+            TODO:
+        """
+        pass
+
+    def fit(self, X, y):
+        """Fit training data.
+
+        Args:
+            X : Training vectors, X.shape : [#samples, #features]
+            y : Target values, y.shape : [#samples]
+        """
+        return self
+
+    def predict(self, X):
+        """Return the predicted Y values.
+
+        Args:
+            X_test: X_test : X test vector
+
+        Returns:
+            Y_pred : Y prediction vector
+        """
+        return None
+
+
 class LinearRegression:
     """This is the linear regression implementation for the ML library.
     """
@@ -436,6 +468,38 @@ class Perceptron:
             numpy.ndarray: the current weight array
         """
         return self.__weight
+
+
+class SupportVectorMachine:
+    """This is the support vector machine implementation for the ML library.
+    """
+    def __init__(self):
+        """Initialize the support vector machine.
+
+        Args:
+            TODO:
+        """
+        pass
+
+    def fit(self, X, y):
+        """Fit training data.
+
+        Args:
+            X : Training vectors, X.shape : [#samples, #features]
+            y : Target values, y.shape : [#samples]
+        """
+        return self
+
+    def predict(self, X):
+        """Return the predicted Y values.
+
+        Args:
+            X_test: X_test : X test vector
+
+        Returns:
+            Y_pred : Y prediction vector
+        """
+        return None
 
 
 def plot_decision_regions(X, y, classifier, resolution=0.02, x_label="", y_label="", title=""):
