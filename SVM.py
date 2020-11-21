@@ -58,14 +58,14 @@ def main():
     print(classification_report(y, sk_svm.predict(X)))
 
     # ML.py support vector machine
-    # ml_svm = SupportVectorMachine()
-    # ml_svm.fit(X, y)
-    #
-    # # plot the decision regions and display metrics to the console
-    # plot_decision_regions(X, y, ml_svm, resolution=0.1, x_label=xlabel, y_label=ylabel,
-    #                       title=title + "\nML.py support vector machine")
-    # print(title + "\nML.py support vector machine")
-    # print(classification_report(y, ml_svm.predict(X)))
+    ml_svm = SupportVectorMachine()
+    ml_svm.fit(X, y)
+
+    # plot the decision regions and display metrics to the console
+    plot_decision_regions(X, y, ml_svm, resolution=0.1, x_label=xlabel, y_label=ylabel,
+                          title=title + "\nML.py support vector machine")
+    print(title + "\nML.py support vector machine")
+    print(classification_report(y, ml_svm.predict(X)))
     ############################################################################
 
     # IRIS DATASET 2 ###########################################################
@@ -111,14 +111,14 @@ def main():
     print(classification_report(y, sk_svm.predict(X)))
 
     # ML.py support vector machine
-    # ml_svm = SupportVectorMachine()
-    # ml_svm.fit(X, y)
-    #
-    # # plot the decision regions and display metrics to the console
-    # plot_decision_regions(X, y, ml_svm, resolution=0.1, x_label=xlabel, y_label=ylabel,
-    #                       title=title + "\nML.py support vector machine")
-    # print(title + "\nML.py support vector machine")
-    # print(classification_report(y, ml_svm.predict(X)))
+    ml_svm = SupportVectorMachine()
+    ml_svm.fit(X, y)
+
+    # plot the decision regions and display metrics to the console
+    plot_decision_regions(X, y, ml_svm, resolution=0.1, x_label=xlabel, y_label=ylabel,
+                          title=title + "\nML.py support vector machine")
+    print(title + "\nML.py support vector machine")
+    print(classification_report(y, ml_svm.predict(X)))
     ####################################################################################################################
 
 
