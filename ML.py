@@ -223,38 +223,6 @@ class DecisionStump(BaseEstimator, ClassifierMixin):
         return Y_pred.T[0]
 
 
-class NearestNeighbors:
-    """This is the k-nearest neighbors implementation for the ML library.
-    """
-    def __init__(self):
-        """Initialize k-nearest neighbors.
-
-        Args:
-            TODO:
-        """
-        pass
-
-    def fit(self, X, y):
-        """Fit training data.
-
-        Args:
-            X : Training vectors, X.shape : [#samples, #features]
-            y : Target values, y.shape : [#samples]
-        """
-        return self
-
-    def predict(self, X):
-        """Return the predicted Y values.
-
-        Args:
-            X_test: X_test : X test vector
-
-        Returns:
-            Y_pred : Y prediction vector
-        """
-        return None
-
-
 class LinearRegression:
     """This is the linear regression implementation for the ML library.
     """
@@ -367,6 +335,71 @@ class LogisticRegression:
 
         # return the array as type int
         return Y_pred.astype(int)
+
+
+class NearestNeighbors:
+    """This is the k-nearest neighbors implementation for the ML library.
+    """
+    def __init__(self, k=1):
+        """Initialize k-nearest neighbors.
+
+        Args:
+            k: number of nearest neighbors to consider
+        """
+        self.__k = k
+        self.__X = []
+        self.__y = []
+
+    def euclidean_distance(self, A, B):
+        """Helper function to get the Euclidean distance between two points.
+
+        Args:
+            A: point A, numpy array
+            B: point B, numpy array
+
+        Returns: Euclidean distance between A and B
+
+        """
+        return np.linalg.norm(A - B)
+
+    def fit(self, X, y):
+        """Fit training data.
+
+        Args:
+            X : Training vectors, X.shape : [#samples, #features]
+            y : Target values, y.shape : [#samples]
+        """
+        self.__X = X
+        self.__y = y
+
+    def predict(self, X):
+        """Return the predicted Y values.
+
+        Args:
+            X_test: X_test : X test vector
+
+        Returns:
+            Y_pred : Y prediction vector
+        """
+        # TODO: Currently self.__k is ignored because only k=1 is supported.
+        y_pred = []
+
+        for i in range(X.shape[0]):
+            distances = []
+            for j in range(self.__X.shape[0]):
+                # find euclidean distance
+                d = self.euclidean_distance(X[i], self.__X[j])
+
+                # append the distance and label to the distances list
+                distances.append([d, self.__y[j]])
+
+            # TODO: only k=1 is supported at this time, so we just find the min
+            min_dist = min(distances, key=lambda dist: dist[0])
+
+            # we're only interested in the label
+            y_pred.append(min_dist[1])
+
+        return np.array(y_pred)
 
 
 class Perceptron:
