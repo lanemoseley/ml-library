@@ -7,7 +7,7 @@
 #         https://gist.github.com/curran/a08a1080b88344b0c8a7
 
 import matplotlib.pyplot as plt
-from ML import SupportVectorMachine, plot_decision_regions
+from ML import SupportVectorMachine, plot_svc_decision_function
 import numpy as np
 import pandas as pd
 from sklearn.svm import SVC
@@ -32,9 +32,12 @@ def main():
     xlabel = 'Sepal Length [cm]'
     ylabel = 'Sepal Width [cm]'
 
-    # Plot what we have so far
-    # Plot labels
-    plt.title(title)
+    # scikit-learn support vector machine
+    sk_svm = SVC(kernel='linear', C=1E10)
+    sk_svm.fit(X, y)
+
+    # Plot the margins
+    plt.title(title + "\nscikit-learn support vector machine")
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     # Plot the setosa data
@@ -44,16 +47,9 @@ def main():
     # Setup the plot legend
     plt.legend(loc='upper left')
 
-    # Display the plot
+    plot_svc_decision_function(sk_svm)
     plt.show()
 
-    # scikit-learn support vector machine
-    sk_svm = SVC()
-    sk_svm.fit(X, y)
-
-    # plot the decision regions and display metrics to the console
-    plot_decision_regions(X, y, sk_svm, resolution=0.1, x_label=xlabel, y_label=ylabel,
-                          title=title + "\nscikit-learn support vector machine")
     print(title + "\nscikit-learn support vector machine")
     print(classification_report(y, sk_svm.predict(X)))
 
@@ -61,11 +57,22 @@ def main():
     ml_svm = SupportVectorMachine()
     ml_svm.fit(X, y)
 
-    # plot the decision regions and display metrics to the console
-    plot_decision_regions(X, y, ml_svm, resolution=0.1, x_label=xlabel, y_label=ylabel,
-                          title=title + "\nML.py support vector machine")
+    # Plot the margins
+    plt.title(title + "\nML.py support vector machine")
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    # Plot the setosa data
+    plt.scatter(X[:50, 0], X[:50, 1], color='red', marker='o', label='setosa')
+    # Plot the versicolor data
+    plt.scatter(X[50:100, 0], X[50:100, 1], color='blue', marker='x', label='versicolor')
+    # Setup the plot legend
+    plt.legend(loc='upper left')
+
+    plot_svc_decision_function(ml_svm)
+    plt.show()
+
     print(title + "\nML.py support vector machine")
-    print(classification_report(y, ml_svm.predict(X)))
+    print(classification_report(y, sk_svm.predict(X)))
     ############################################################################
 
     # IRIS DATASET 2 ###########################################################
@@ -85,9 +92,12 @@ def main():
     xlabel = 'Petal Width [cm]'
     ylabel = 'Sepal Length [cm]'
 
-    # Plot what we have so far
-    # Plot labels
-    plt.title(title)
+    # scikit-learn support vector machine
+    sk_svm = SVC(kernel='linear', C=1E10)
+    sk_svm.fit(X, y)
+
+    # Plot the margins
+    plt.title(title + "\nscikit-learn support vector machine")
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     # Plot the setosa data
@@ -97,16 +107,9 @@ def main():
     # Setup the plot legend
     plt.legend(loc='upper left')
 
-    # Display the plot
+    plot_svc_decision_function(sk_svm)
     plt.show()
 
-    # scikit-learn support vector machine
-    sk_svm = SVC()
-    sk_svm.fit(X, y)
-
-    # plot the decision regions and display metrics to the console
-    plot_decision_regions(X, y, sk_svm, resolution=0.1, x_label=xlabel, y_label=ylabel,
-                          title=title + "\nscikit-learn support vector machine")
     print(title + "\nscikit-learn support vector machine")
     print(classification_report(y, sk_svm.predict(X)))
 
@@ -114,11 +117,22 @@ def main():
     ml_svm = SupportVectorMachine()
     ml_svm.fit(X, y)
 
-    # plot the decision regions and display metrics to the console
-    plot_decision_regions(X, y, ml_svm, resolution=0.1, x_label=xlabel, y_label=ylabel,
-                          title=title + "\nML.py support vector machine")
+    # Plot the margins
+    plt.title(title + "\nML.py support vector machine")
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    # Plot the setosa data
+    plt.scatter(X[:50, 0], X[:50, 1], color='red', marker='o', label='setosa')
+    # Plot the versicolor data
+    plt.scatter(X[50:100, 0], X[50:100, 1], color='blue', marker='x', label='versicolor')
+    # Setup the plot legend
+    plt.legend(loc='upper left')
+
+    plot_svc_decision_function(ml_svm)
+    plt.show()
+
     print(title + "\nML.py support vector machine")
-    print(classification_report(y, ml_svm.predict(X)))
+    print(classification_report(y, sk_svm.predict(X)))
     ####################################################################################################################
 
 
