@@ -10,6 +10,7 @@ from math import exp, inf
 from matplotlib.colors import ListedColormap
 import matplotlib.pyplot as plt
 from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.utils import shuffle
 from sklearn.utils.multiclass import unique_labels
 
 
@@ -233,43 +234,61 @@ class LinearRegression:
             learning_rate (float, optional): used to scale the weight array. Defaults to 0.05.
             iterations (int, optional): number of gradient descent iterations. Defaults to 1000.
         """
+        self.average_error = None
+        self.history = None
         self.intercept = 0
         self.__iterations = iterations
         self.__learning_rate = learning_rate
         self.slope = 0
 
+    def cost(self, X, Y):
+        """Mean squared error cost function.
+
+        Args:
+            X: X test vector (independent variables)
+            Y: Y training vector (dependent variables)
+
+        Returns:
+            Mean squared error
+        """
+        # mean squared error: 1/n * sum(0, n, (Y_pred[i] - Y[i])^2)
+        Y_pred = self.predict(X)
+        sqr_error = np.square(Y_pred - Y)
+        return np.sum(sqr_error) / X.shape[0]
+
     def fit(self, X, Y):
-        """Fit training data. Since all linear regression problems are
-        convex regardless of the input data, we can use gradient descent
-        without worrying about getting stuck in a local minimum.
+        """Fit training data using stochastic gradient descent.
 
         Args:
             X : X training vector (independent variables)
             Y : Y training vector (dependent variables)
         """
+        # lists for tracking error and changes to slope and intercept
+        self.average_error = []
+        self.history = []
+
         self.intercept = 0
         self.slope = 0
-        n = float(len(X))
 
-        # equation for a line:  Y = mX + b
-        # mean squared error:   1/n * sum(0, n, (Y[i] - Y_pred[i])^2)
-        #                     = 1/n * sum(0, n, (Y[i] - (mX[i] + b)^2)
+        # randomly shuffle the input data, this is required
+        # for stochastic gradient descent
+        X, Y = shuffle(X, Y, random_state=0)
 
-        # naive batch gradient descent using partial derivatives
-        # of the mean squared error function (see doc for more details)
+        # stochastic gradient descent
         for i in range(self.__iterations):
-            # predicted y value with current weights
-            pred = (self.slope * X) + self.intercept
+            for j in range(X.shape[0]):
+                # save the weights and errors
+                self.history.append([self.slope, self.intercept])
+                self.average_error.append(self.cost(X, Y))
 
-            # derivative of mean squared error w.r.t. m (slope)
-            d_slope_avg = sum(2 * (Y - pred) * (-X)) / n
+                # update the weights based on just this row of X
+                pred = (self.slope * X[j]) + self.intercept
 
-            # derivative of mean squared error w.r.t. b (intercept)
-            d_intercept_avg = sum(-2 * (Y - pred)) / n
+                d_intercept = (-2 * (Y[j] - pred)) / X.shape[0]
+                d_slope = (2 * (Y[j] - pred) * (-X[j])) / X.shape[0]
 
-            # update the weights
-            self.slope -= (self.__learning_rate * d_slope_avg)
-            self.intercept -= (self.__learning_rate * d_intercept_avg)
+                self.intercept -= self.__learning_rate * d_intercept
+                self.slope -= self.__learning_rate * d_slope
 
     def predict(self, X_test):
         """Return the predicted Y values.
