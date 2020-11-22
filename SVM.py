@@ -54,7 +54,7 @@ def main():
     print(classification_report(y, sk_svm.predict(X)))
 
     # ML.py support vector machine
-    ml_svm = SupportVectorMachine()
+    ml_svm = SupportVectorMachine(learning_rate=0.02, iterations=2000, R=1E10)
     ml_svm.fit(X, y)
 
     # Plot the margins
@@ -72,7 +72,7 @@ def main():
     plt.show()
 
     print(title + "\nML.py support vector machine")
-    print(classification_report(y, sk_svm.predict(X)))
+    print(classification_report(y, ml_svm.predict(X)))
     ############################################################################
 
     # IRIS DATASET 2 ###########################################################
@@ -114,7 +114,7 @@ def main():
     print(classification_report(y, sk_svm.predict(X)))
 
     # ML.py support vector machine
-    ml_svm = SupportVectorMachine()
+    ml_svm = SupportVectorMachine(learning_rate=0.02, iterations=2000, R=1E10)
     ml_svm.fit(X, y)
 
     # Plot the margins
@@ -132,7 +132,7 @@ def main():
     plt.show()
 
     print(title + "\nML.py support vector machine")
-    print(classification_report(y, sk_svm.predict(X)))
+    print(classification_report(y, ml_svm.predict(X)))
     ####################################################################################################################
 
 
