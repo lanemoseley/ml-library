@@ -17,6 +17,7 @@ CLASSES
         LogisticRegression
         NearestNeighbors
         Perceptron
+        SupportVectorMachine
     sklearn.base.BaseEstimator(builtins.object)
         AxisAlignedRectangles(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
         DecisionStump(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin)
@@ -454,6 +455,50 @@ CLASSES
      |  
      |  __weakref__
      |      list of weak references to the object (if defined)
+    
+    class SupportVectorMachine(builtins.object)
+     |  SupportVectorMachine(learning_rate=0.001, iterations=1000, R=100)
+     |  
+     |  This is the support vector machine implementation for the ML library.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, learning_rate=0.001, iterations=1000, R=100)
+     |      Initialize the support vector machine.
+     |      
+     |      Args:
+     |          learning_rate (float, optional): used to scale the weight array.
+     |          iterations (int, optional): number learning iterations.
+     |          R: regularization parameter, strength of regularization is inversely proportional to R
+     |  
+     |  decision_function(self, X)
+     |      Compute decision function w.T * X - b
+     |  
+     |  fit(self, X, y)
+     |      Fit training data using hard margin classification. Find weights and
+     |      bias that maximize the margin between the two classes of data.
+     |      
+     |      Args:
+     |          X : Training vectors, X.shape : [#samples, #features]
+     |          y : Target values, y.shape : [#samples]
+     |  
+     |  predict(self, X)
+     |      Return the predicted Y values.
+     |      
+     |      Args:
+     |          X_test: X_test : X test vector
+     |      
+     |      Returns:
+     |          Y_pred : Y prediction vector
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
 
 FUNCTIONS
     exp(x, /)
@@ -488,6 +533,14 @@ FUNCTIONS
             line_color (str, optional): Plot line color. Defaults to 'red'.
             x_range (tuple, optional): x range of graph
             y_range (tuple, optional): y range of graph
+    
+    plot_svc_decision_function(model, ax=None, plot_support=True)
+        This is a helper function to plot the decision function for a 2D SVC.
+        
+        Author: Jake VanderPlas
+        Source: Python Data Science Handbook
+        License: MIT
+        URL: https://jakevdp.github.io/PythonDataScienceHandbook/05.07-support-vector-machines.html
 
 DATA
     inf = inf
