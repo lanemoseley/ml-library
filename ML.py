@@ -506,22 +506,60 @@ class Perceptron:
 class SupportVectorMachine:
     """This is the support vector machine implementation for the ML library.
     """
-    def __init__(self):
+    def __init__(self, learning_rate=0.001, iterations=1000, R=100):
         """Initialize the support vector machine.
 
         Args:
-            TODO:
+            learning_rate (float, optional): used to scale the weight array.
+            iterations (int, optional): number learning iterations.
+            R: regularization parameter, strength of regularization is inversely proportional to R
         """
-        pass
+        self.__bias = None
+        self.__iterations = iterations
+        self.__learning_rate = learning_rate
+        self.__R = 1 / R              # regularization parameter
+        self.support_vectors_ = None  # store the support vectors, ensures compatibility with plotting function
+        self.__weights = None
+
+    def decision_function(self, X):
+        """Compute decision function w.T * X - b
+        """
+        return np.dot(X, self.__weights.T) - self.__bias
 
     def fit(self, X, y):
-        """Fit training data.
+        """Fit training data using hard margin classification. Find weights and
+        bias that maximize the margin between the two classes of data.
 
         Args:
             X : Training vectors, X.shape : [#samples, #features]
             y : Target values, y.shape : [#samples]
         """
-        return self
+        # number of weights equals number of features
+        self.__weights = np.zeros(X.shape[1])
+        self.__bias = 0
+
+        # the labels are expect to be either 0 or 1, convert them to -1 and 1
+        # use y <= 0 just in case the labels are already -1 or 1
+        y = np.where(y <= 0, -1, 1)
+
+        for i in range(self.__iterations):
+            for j in range(X.shape[0]):
+                # hyperplane must satisfy w*x-b=0
+                # support vectors must satisfy w*x-b>=1 and w*x-b<=-1
+                # using hing loss function and gradient descent
+                # lemma 15.2 from page 204 in Understanding Machine Learning
+                if y[j] * (np.dot(X[j], self.__weights) - self.__bias) >= 1:
+                    w_derivative = 2 * self.__R * self.__weights
+                    # b_derivative = 0, so we don't update self.__bias
+                    self.__weights -= self.__learning_rate * w_derivative
+                else:
+                    w_derivative = (2 * self.__R * self.__weights) - np.dot(X[j], y[j])
+                    b_derivative = y[j]
+                    self.__weights -= self.__learning_rate * w_derivative
+                    self.__bias -= self.__learning_rate * b_derivative
+
+        # save the support vectors in a format that is usable by plotting function
+        self.support_vectors_ = np.array([self.__weights])
 
     def predict(self, X):
         """Return the predicted Y values.
@@ -532,7 +570,9 @@ class SupportVectorMachine:
         Returns:
             Y_pred : Y prediction vector
         """
-        return None
+        # the sign of the decision function is the label
+        # set the labels to be either 0 or 1 and return
+        return np.where(np.sign(self.decision_function(X)) < 0, 0, 1)
 
 
 def plot_decision_regions(X, y, classifier, resolution=0.02, x_label="", y_label="", title=""):
@@ -607,3 +647,38 @@ def plot_regression_line(y_predicted, x_actual, y_actual, x_label="", y_label=""
     plt.title(title)
 
     plt.show()
+
+
+def plot_svc_decision_function(model, ax=None, plot_support=True):
+    """
+    This is a helper function to plot the decision function for a 2D SVC.
+
+    Author: Jake VanderPlas
+    Source: Python Data Science Handbook
+    License: MIT
+    URL: https://jakevdp.github.io/PythonDataScienceHandbook/05.07-support-vector-machines.html
+    """
+    if ax is None:
+        ax = plt.gca()
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+
+    # create grid to evaluate model
+    x = np.linspace(xlim[0], xlim[1], 30)
+    y = np.linspace(ylim[0], ylim[1], 30)
+    Y, X = np.meshgrid(y, x)
+    xy = np.vstack([X.ravel(), Y.ravel()]).T
+    P = model.decision_function(xy).reshape(X.shape)
+
+    # plot decision boundary and margins
+    ax.contour(X, Y, P, colors='k',
+               levels=[-1, 0, 1], alpha=0.5,
+               linestyles=['--', '-', '--'])
+
+    # plot support vectors
+    if plot_support:
+        ax.scatter(model.support_vectors_[:, 0],
+                   model.support_vectors_[:, 1],
+                   s=300, linewidth=1, facecolors='none');
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
