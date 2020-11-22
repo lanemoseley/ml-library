@@ -280,10 +280,18 @@ CLASSES
      |          learning_rate (float, optional): used to scale the weight array. Defaults to 0.05.
      |          iterations (int, optional): number of gradient descent iterations. Defaults to 1000.
      |  
+     |  cost(self, X, Y)
+     |      Mean squared error cost function.
+     |      
+     |      Args:
+     |          X: X test vector (independent variables)
+     |          Y: Y training vector (dependent variables)
+     |      
+     |      Returns:
+     |          Mean squared error
+     |  
      |  fit(self, X, Y)
-     |      Fit training data. Since all linear regression problems are
-     |      convex regardless of the input data, we can use gradient descent
-     |      without worrying about getting stuck in a local minimum.
+     |      Fit training data using stochastic gradient descent.
      |      
      |      Args:
      |          X : X training vector (independent variables)
