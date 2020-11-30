@@ -31,4 +31,5 @@ Contents include:
 * ```csc448_Project.pdf``` - the original assignment description
 * ```pydoc.txt``` - pydoc generated code documentation
 * ```term_project.docx``` - a detailed document describing the functionality and usage of the ML Library
+* ```term_project.pdf``` - a PDF version of ```term_project.docx```
 
