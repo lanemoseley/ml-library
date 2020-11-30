@@ -400,7 +400,6 @@ class NearestNeighbors:
         Returns:
             Y_pred : Y prediction vector
         """
-        # TODO: Currently self.__k is ignored because only k=1 is supported.
         y_pred = []
 
         for i in range(X.shape[0]):
@@ -412,7 +411,10 @@ class NearestNeighbors:
                 # append the distance and label to the distances list
                 distances.append([d, self.__y[j]])
 
-            # TODO: only k=1 is supported at this time, so we just find the min
+            # TODO: Only k=1 is supported at this time, so we just find the min.
+            #       To support any value of k, simply sort the distances list
+            #       and let the k nearest neighbors "vote" on the classification
+            #       of X.
             min_dist = min(distances, key=lambda dist: dist[0])
 
             # we're only interested in the label
